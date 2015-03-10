@@ -152,6 +152,14 @@ test_min_max()
 void
 test_massive_load()
 {
+	/*
+	 * This test is disabled by default, because it takes a few
+	 * seconds to complete. It fills a tree with completely random
+	 * data, asserts the tree size and prints out the tree depth.
+	 * Because the depth can vary with random data, it is not
+	 * checked here, but should be somewhere in the range of 60
+	 * levels.
+	 */
 	int i;
 	struct node *tree = btree_insert(NULL, 5000000, NULL);
 
