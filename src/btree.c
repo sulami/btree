@@ -135,7 +135,7 @@ btree_remove(struct node *node, KEYTYPE key)
 		return new_node;
 	} else if (btree_lookup(node, key)) { /* Child/leaf node */
 		struct node *parent = _parent(node, key);
-		struct node *old = malloc(sizeof(node));
+		struct node *old = malloc(sizeof(struct node));
 		if (old == NULL)
 			return node;
 
