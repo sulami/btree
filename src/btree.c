@@ -88,6 +88,8 @@ _remove_node(struct node *node)
 		new_node = node->left;
 	} else if ((node->left == NULL) && (node->right != NULL)) {
 		new_node = node->right;
+	} else {
+		new_node = NULL;
 	}
 
 	free(node);
