@@ -76,6 +76,11 @@ void btree_save(struct node *, const char *);
  */
 struct node *btree_load(const char *);
 
+/*
+ * Delete an entire tree from memory, using post-order traversal.
+ */
+void btree_delete(struct node *);
+
 /* PRIVATE FUNCTIONS */
 
 /*

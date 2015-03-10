@@ -267,3 +267,18 @@ btree_load(const char *path)
 	return tree;
 }
 
+void
+btree_delete(struct node *node)
+{
+	if (node == NULL)
+		return;
+
+	if (node->left != NULL)
+		btree_delete(node->left);
+
+	if (node->right != NULL)
+		btree_delete(node->right);
+
+	free(node);
+}
+

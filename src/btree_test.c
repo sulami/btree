@@ -16,6 +16,8 @@ test_first_node()
 	assert(node->payload == (void *)50000);
 	assert(node->left == NULL);
 	assert(node->right == NULL);
+
+	free(node);
 }
 
 void
@@ -30,6 +32,8 @@ test_full_tree()
 	assert(btree_lookup(tree, 5));
 	assert(btree_lookup(tree, 6));
 	assert(btree_lookup(tree, 7));
+
+	btree_delete(tree);
 }
 
 void
@@ -46,6 +50,8 @@ test_delete_leaf()
 	assert(btree_lookup(tree, 5));
 	assert(btree_lookup(tree, 6) == false);
 	assert(btree_lookup(tree, 7));
+
+	btree_delete(tree);
 }
 
 void
@@ -72,6 +78,8 @@ test_delete_mid()
 	assert(btree_lookup(tree, 5));
 	assert(btree_lookup(tree, 6));
 	assert(btree_lookup(tree, 7));
+
+	btree_delete(tree);
 }
 
 void
@@ -100,6 +108,8 @@ test_delete_root()
 	assert(btree_lookup(tree, 5) == false);
 	assert(btree_lookup(tree, 6));
 	assert(btree_lookup(tree, 7));
+
+	btree_delete(tree);
 }
 
 void
@@ -147,6 +157,8 @@ test_min_max()
 
 	assert(btree_min(tree)->key == 1);
 	assert(btree_max(tree)->key == 7);
+
+	btree_delete(tree);
 }
 
 void
@@ -169,6 +181,8 @@ test_massive_load()
 	assert(btree_size(tree) == 10000001);
 
 	printf("Massive tree depth: %i levels\n", btree_depth(tree));
+
+	btree_delete(tree);
 }
 
 void
@@ -182,6 +196,9 @@ test_save_and_load()
 	assert(tree_two);
 	assert(btree_size(tree_two) == btree_size(tree));
 	assert(btree_depth(tree_two) == btree_depth(tree));
+
+	btree_delete(tree);
+	btree_delete(tree_two);
 }
 
 int
