@@ -176,11 +176,12 @@ test_save_and_load()
 {
 	BUILD_TREE
 
-	btree_save(tree, "/tmp/btree_test");
+	btree_save(tree, "/tmp/btree_test.bin");
 
-	struct node *tree_two = btree_load("/tmp/btree_test");
+	struct node *tree_two = btree_load("/tmp/btree_test.bin");
 	assert(tree_two);
 	assert(btree_size(tree_two) == btree_size(tree));
+	assert(btree_depth(tree_two) == btree_depth(tree));
 }
 
 int

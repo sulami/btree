@@ -258,9 +258,7 @@ btree_load(const char *path)
 
 		memcpy(plbuf, buf + KEYSIZE, PAYLOADSIZE);
 
-		tree = btree_insert(tree,
-		                    (KEYTYPE)*buf + i * (KEYSIZE + PAYLOADSIZE),
-		                    plbuf);
+		tree = btree_insert(tree, (KEYTYPE)*buf, plbuf);
 	}
 
 	fclose(file);
