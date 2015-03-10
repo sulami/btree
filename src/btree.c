@@ -4,7 +4,7 @@
 #include "btree.h"
 
 struct node *
-_new_node(int key, void *payload)
+_new_node(KEYTYPE key, void *payload)
 {
 	struct node* node = malloc(sizeof(struct node));
 
@@ -21,7 +21,7 @@ _new_node(int key, void *payload)
 }
 
 struct node *
-_parent(struct node *node, int key)
+_parent(struct node *node, KEYTYPE key)
 {
 	while ((node->left->key != key) && (node->right->key != key)) {
 		if (key <= node->key)
@@ -94,7 +94,7 @@ _remove_node(struct node *node)
 }
 
 struct node *
-btree_insert(struct node *node, int key, void *payload)
+btree_insert(struct node *node, KEYTYPE key, void *payload)
 {
 	if (node == NULL)
 		return _new_node(key, payload);
@@ -108,7 +108,7 @@ btree_insert(struct node *node, int key, void *payload)
 }
 
 void *
-btree_lookup(struct node *node, int target)
+btree_lookup(struct node *node, KEYTYPE target)
 {
 	if (node == NULL)
 		return NULL;
@@ -123,7 +123,7 @@ btree_lookup(struct node *node, int target)
 }
 
 struct node *
-btree_remove(struct node *node, int key)
+btree_remove(struct node *node, KEYTYPE key)
 {
 	if (node == NULL) { /* No node */
 		return NULL;

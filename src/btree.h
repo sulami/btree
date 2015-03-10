@@ -2,11 +2,18 @@
 #define BTREE_H_INCLUDED
 
 /*
+ * These might be changed for different use cases.
+ */
+#define KEYTYPE int
+#define KEYSIZE (sizeof(KEYTYPE))
+#define PAYLOADSIZE (sizeof(int))
+
+/*
  * Node struct. Contains a key for sorting/searching, a payload void
  * pointer and pointers to children nodes.
  */
 struct node {
-	int key;
+	KEYTYPE key;
 	void *payload;
 	struct node *left;
 	struct node *right;
@@ -19,21 +26,21 @@ struct node {
  * creates a new tree and returns that. If an existing tree is being
  * passed, the new root node could be discarded (but not encouraged).
  */
-struct node *btree_insert(struct node *, int, void *);
+struct node *btree_insert(struct node *, KEYTYPE, void *);
 
 /*
  * Lookup a given key in a given tree, returns the payload pointer, or
  * NULL if the element is not part of the tree. Also returns the first
  * found element in the event of duplicate keys.
  */
-void *btree_lookup(struct node *, int);
+void *btree_lookup(struct node *, KEYTYPE);
 
 /*
  * Remove a node from a tree, identified by the given key. Like
  * btree_lookup(), it uses the first found match. Returns the new root
  * node, which has to be used as the root could have changed.
  */
-struct node *btree_remove(struct node *, int);
+struct node *btree_remove(struct node *, KEYTYPE);
 
 /*
  * Calculates the total count of elements in a given tree and returns
@@ -63,13 +70,13 @@ struct node *btree_max(struct node *);
 /*
  * Allocate a new node and return it.
  */
-struct node *_new_node(int, void *);
+struct node *_new_node(KEYTYPE, void *);
 
 /*
  * Try to find the parent node for a given key, so we can use it later
  * on to attach something else when we have to replace the child.
  */
-struct node *_parent(struct node *, int);
+struct node *_parent(struct node *, KEYTYPE);
 
 /*
  * Calculate how deep the left path is (always going left), to make a
