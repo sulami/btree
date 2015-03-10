@@ -65,6 +65,17 @@ struct node *btree_min(struct node *);
  */
 struct node *btree_max(struct node *);
 
+/*
+ * Save a tree to a file at path. Overrides files if needed.
+ */
+void btree_save(struct node *, const char *);
+
+/*
+ * Load a tree from a file at path. Return NULL if anything fails, the
+ * file cannot be openened, is invalid, etc.
+ */
+struct node *btree_load(const char *);
+
 /* PRIVATE FUNCTIONS */
 
 /*
@@ -96,6 +107,16 @@ int _right_path(struct node *);
  * or NULL if it was a leaf.
  */
 struct node *_remove_node(struct node *);
+
+/*
+ * Do an recursive pre-order traversal to save all the nodes to the
+ * already opened file in a way that allows us to reconstruct the tree
+ * easily afterwards. We obviously only save keys and payload, becuase
+ * pointers are not valid anymore after the saving program has exited.
+ * Memory overhead is minimized because we only read one set of node
+ * data into a buffer at a time.
+ */
+void _btree_save(FILE *f, struct node *);
 
 #endif
 

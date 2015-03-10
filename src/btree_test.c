@@ -171,6 +171,18 @@ test_massive_load()
 	printf("Massive tree depth: %i levels\n", btree_depth(tree));
 }
 
+void
+test_save_and_load()
+{
+	BUILD_TREE
+
+	btree_save(tree, "/tmp/btree_test");
+
+	struct node *tree_two = btree_load("/tmp/btree_test");
+	assert(tree_two);
+	assert(btree_size(tree_two) == btree_size(tree));
+}
+
 int
 main()
 {
@@ -185,6 +197,7 @@ main()
 	run_test(test_tree_depth);
 	run_test(test_min_max);
 	/* run_test(test_massive_load); */
+	run_test(test_save_and_load);
 
 	printf("\x1B[32mAll tests successful!\x1B[0m\n\n");
 

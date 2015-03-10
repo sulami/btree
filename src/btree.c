@@ -1,5 +1,7 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "btree.h"
 
@@ -195,5 +197,73 @@ btree_max(struct node *node)
 		return btree_max(node->right);
 
 	return node;
+}
+
+void
+_btree_save(FILE *file, struct node *node)
+{
+	fwrite(&node->key, KEYSIZE, 1, file);
+	fwrite(node->payload, PAYLOADSIZE, 1, file);
+
+	if (node->left)
+		_btree_save(file, node->left);
+	if (node->right)
+		_btree_save(file, node->right);
+}
+
+void
+btree_save(struct node *node, const char *path)
+{
+	FILE *file = fopen(path, "w");
+
+	_btree_save(file, node);
+
+	fclose(file);
+}
+
+struct node *
+btree_load(const char *path)
+{
+	long fsize;
+	int i, num_nodes;
+	char *buf;
+	struct node *tree = NULL;
+	FILE *file = fopen(path, "r");
+	if (file == NULL)
+		return NULL;
+
+	fseek(file, 0, SEEK_END);
+	fsize = ftell(file);
+	rewind(file);
+
+	buf = malloc(KEYSIZE + PAYLOADSIZE);
+	if (buf == NULL) {
+		fclose(file);
+		return NULL;
+	}
+
+	num_nodes = fsize / (KEYSIZE + PAYLOADSIZE);
+
+	for (i = 0; i < num_nodes; i++) {
+		void *plbuf = malloc(PAYLOADSIZE);
+		if (plbuf == NULL) {
+			free(buf);
+			fclose(file);
+			return NULL;
+		}
+
+		fread(buf, KEYSIZE + PAYLOADSIZE, 1, file);
+
+		memcpy(plbuf, buf + KEYSIZE, PAYLOADSIZE);
+
+		tree = btree_insert(tree,
+		                    (KEYTYPE)*buf + i * (KEYSIZE + PAYLOADSIZE),
+		                    plbuf);
+	}
+
+	fclose(file);
+	free(buf);
+
+	return tree;
 }
 
